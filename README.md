@@ -30,17 +30,18 @@ pip install pygame
 1. Clone the repository
    ```bash
    git clone https://github.com/PedroYutaroUEA/pong_pygame.git
+   ```
 2. Change into the project directory:
   ```bash
-   cd pong_pygame
+  cd pong_pygame
   ```
 3. Run the Pong game:
    ```bash
    python main.py
-
+   ```
 ## How to play
 The objective of the game is to score points by hitting the ball past your opponent's paddle. The game continues until one player reaches the winning score.
 
 ## Controls
-Player 1 (left-side): Use the arrow keys UP and DOWN to move the paddle up and down, respectively.
-Player 2 (right-side): You cannot control this player because it's a dummy AI.
+- Player 1 (left-side): Use the arrow keys UP and DOWN to move the paddle up and down, respectively.
+- Player 2 (right-side): You cannot control this player because it's a dummy AI.
