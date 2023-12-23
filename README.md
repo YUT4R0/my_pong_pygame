@@ -22,25 +22,21 @@ To get a local copy up and running, follow these simple steps.
 ### Prerequisites
 
 Make sure you have Python and Pygame installed on your machine. If not, you can download Python from [python.org](https://www.python.org/downloads/) and install Pygame using the following command:
-
-<pre>
-```bash
+```
 pip install pygame
 ```
-</pre>
+
 ## Installation
 1. Clone the repository
    ```
    git clone https://github.com/PedroYutaroUEA/pong_pygame.git
-   ```
 2. Change into the project directory:
-  ```bash
-  cd pong_pygame
-  ```
-3. Run the Pong game:
-   ```bash
-   python main.py
    ```
+   cd pong_pygame
+3. Run the Pong game:
+   ```
+   python main.py
+   
 ## How to play
 The objective of the game is to score points by hitting the ball past your opponent's paddle. The game continues until one player reaches the winning score.
 
