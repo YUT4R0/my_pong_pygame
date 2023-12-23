@@ -36,6 +36,7 @@ pip install pygame
 3. Run the Pong game:
    ```
    python main.py
+   ```
 ## How to play
 The objective of the game is to score points by hitting the ball past your opponent's paddle. The game continues until one player reaches the winning score.
 
