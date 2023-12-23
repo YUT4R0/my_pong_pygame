@@ -23,12 +23,14 @@ To get a local copy up and running, follow these simple steps.
 
 Make sure you have Python and Pygame installed on your machine. If not, you can download Python from [python.org](https://www.python.org/downloads/) and install Pygame using the following command:
 
-```
+<pre>
+```bash
 pip install pygame
 ```
+</pre>
 ## Installation
 1. Clone the repository
-   ```bash
+   ```
    git clone https://github.com/PedroYutaroUEA/pong_pygame.git
    ```
 2. Change into the project directory:
