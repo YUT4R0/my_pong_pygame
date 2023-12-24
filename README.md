@@ -43,3 +43,5 @@ The objective of the game is to score points by hitting the ball past your oppon
 ## Controls
 - Player 1 (left-side): Use the arrow keys UP and DOWN to move the paddle up and down, respectively.
 - Player 2 (right-side): You cannot control this player because it's a dummy AI.
+
+# Happy Gaming!
