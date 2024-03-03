@@ -1,5 +1,7 @@
 import pygame
 import random
+import sys
+import asyncio
 
 pygame.init()
 
@@ -120,92 +122,98 @@ accelerated_x = False
 score_1, score_2 = 0, 0
 game_loop = True
 
-while game_loop:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            game_loop = False
 
-        #  keystroke events
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                player_1["move_up"] = True
-            if event.key == pygame.K_DOWN:
-                player_1["move_down"] = True
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_UP:
-                player_1["move_up"] = False
-            if event.key == pygame.K_DOWN:
-                player_1["move_down"] = False
+async def main():
+    global game_loop, score_1, score_2, punched_corner, accelerated_x
+    while game_loop:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_loop = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            #  keystroke events
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    player_1["move_up"] = True
+                if event.key == pygame.K_DOWN:
+                    player_1["move_down"] = True
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_UP:
+                    player_1["move_up"] = False
+                if event.key == pygame.K_DOWN:
+                    player_1["move_down"] = False
 
-    # objects drawing render
-    screen.fill(COLOR_BLACK)
-    draw_objects()
-
-    # checking the victory condition
-    if score_1 < MAX_SCORE and score_2 < MAX_SCORE:
-        # refresh screen render
-        update_screen()
-
-        # player 1 movement
-        if player_1["move_up"] and player_1["y"] > 0:
-            player_1["y"] -= 10
-        elif player_1["move_down"] and player_1["y"] < VH - PADDLE_HEIGHT:
-            player_1["y"] += 10
-
-        # player 2 movement
-        if ball["x"] > VW / 4:
-            target_y = ball["y"] + random.randint(-20, 20)
-            if player_2["y"] + PADDLE_HEIGHT / 2 < target_y and player_2["y"] < VH - PADDLE_HEIGHT:
-                player_2["y"] += random.uniform(5, 8)
-            elif player_2["y"] + PADDLE_HEIGHT / 2 > target_y and player_2["y"] > 0:
-                player_2["y"] -= random.uniform(5, 8)
-
-        # player's collision with wall
-        check_wall_collision(player_1)
-        check_wall_collision(player_2)
-
-        # ball movement
-        ball["x"] += ball["d_x"]
-        ball["y"] += ball["d_y"]
-
-        # ball collision with the wall
-        if ball_collision_with_wall():
-            punched_corner = False
-
-        # ball collision with the player 1 's paddle
-        if ball["x"] < 100:
-            if ball["x"] > 90:
-                ball_collision_with_paddle(player_1, accelerated_x)
-            # if ball punches the corner
-            elif not punched_corner:
-                if ball_collision_with_paddle_corner(player_1):
-                    punched_corner = True
-
-        # ball collision with the player 2's paddle
-        if ball["x"] > 1160:
-            if ball["x"] < 1170:
-                ball_collision_with_paddle(player_2, accelerated_x)
-            # if ball punches the corner
-            elif not punched_corner:
-                if ball_collision_with_paddle_corner(player_2):
-                    punched_corner = True
-
-        # scoring update
-        scoring_result = scoring_points()
-        if scoring_result == 1:
-            score_1 += 1
-            accelerated_x = False
-        elif scoring_result == 2:
-            score_2 += 1
-            accelerated_x = False
-    else:
+        # objects drawing render
         screen.fill(COLOR_BLACK)
-        # drawing victory
-        winner = 'Player 1' if score_1 > score_2 else 'Player 2'
-        screen.blit(
-            victory_font.render(f"{winner} VICTORY", True, COLOR_WHITE, COLOR_BLACK),
-            victory_text_rect
-        )
-        update_screen()
+        draw_objects()
 
-pygame.quit()
+        # checking the victory condition
+        if score_1 < MAX_SCORE and score_2 < MAX_SCORE:
+            # player 1 movement
+            if player_1["move_up"] and player_1["y"] > 0:
+                player_1["y"] -= 10
+            elif player_1["move_down"] and player_1["y"] < VH - PADDLE_HEIGHT:
+                player_1["y"] += 10
+
+            # player 2 movement
+            if ball["x"] > VW / 4:
+                target_y = ball["y"] + random.randint(-20, 20)
+                if player_2["y"] + PADDLE_HEIGHT / 2 < target_y and player_2["y"] < VH - PADDLE_HEIGHT:
+                    player_2["y"] += random.uniform(5, 8)
+                elif player_2["y"] + PADDLE_HEIGHT / 2 > target_y and player_2["y"] > 0:
+                    player_2["y"] -= random.uniform(5, 8)
+
+            # player's collision with wall
+            check_wall_collision(player_1)
+            check_wall_collision(player_2)
+
+            # ball movement
+            ball["x"] += ball["d_x"]
+            ball["y"] += ball["d_y"]
+
+            # ball collision with the wall
+            if ball_collision_with_wall():
+                punched_corner = False
+
+            # ball collision with the player 1 's paddle
+            if ball["x"] < 100:
+                if ball["x"] > 90:
+                    ball_collision_with_paddle(player_1, accelerated_x)
+                # if ball punches the corner
+                elif not punched_corner:
+                    if ball_collision_with_paddle_corner(player_1):
+                        punched_corner = True
+
+            # ball collision with the player 2's paddle
+            if ball["x"] > 1160:
+                if ball["x"] < 1170:
+                    ball_collision_with_paddle(player_2, accelerated_x)
+                # if ball punches the corner
+                elif not punched_corner:
+                    if ball_collision_with_paddle_corner(player_2):
+                        punched_corner = True
+
+            # scoring update
+            scoring_result = scoring_points()
+            if scoring_result == 1:
+                score_1 += 1
+                accelerated_x = False
+            elif scoring_result == 2:
+                score_2 += 1
+                accelerated_x = False
+
+            # refresh screen render
+            update_screen()
+        else:
+            screen.fill(COLOR_BLACK)
+            # drawing victory
+            winner = 'Player 1' if score_1 > score_2 else 'Player 2'
+            screen.blit(
+                victory_font.render(f"{winner} VICTORY", True, COLOR_WHITE, COLOR_BLACK),
+                victory_text_rect
+            )
+            update_screen()
+        await asyncio.sleep(0)
+asyncio.run(main())
